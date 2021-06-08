@@ -1,8 +1,11 @@
 package redis
 
-import "fmt"
+import (
+	"fmt"
+	"testing"
+)
 
-func SetFuncTest() {
+func TestSetFunc(t *testing.T) {
 	key := "sets:key"
 	key1 := "sets:key1"
 	fmt.Println(SAdd(key, "m1", "m2", "m3", "m4", "m5", "m6"))  // 6（成功添加个数） 或 0

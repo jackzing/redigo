@@ -1,8 +1,20 @@
 package redis
 
-import "fmt"
-
-func HashFuncTest() {
+import (
+	"fmt"
+	"testing"
+)
+func init() {
+	r := Config{
+		Host:        "127.0.0.7:6379",
+		Password:    "123456",
+		MaxActive:   100,
+		MaxIdle:     20,
+		IdleTimeout: 300,
+	}
+	ConRedis(r)
+}git status
+func TestHashFunc(t *testing.T) {
 	hasKey := "hash:key"
 	fmt.Print(HSet(hasKey, "one", 123))                                                 // true
 	fmt.Println("// true")

@@ -1,8 +1,8 @@
 package redis
 
-// string action
+// Set string action
 func Set(key string, val interface{}) (bool, error) {
-	rlt, err := DB.Get().Do("Set", key, val)
+	rlt, err := doCommand("Set", key, val)
 	if err != nil {
 		return false, err
 	}
@@ -18,7 +18,7 @@ func MSet(keyVal ...KeyVal) (bool, error) {
 		params = append(params, v.Key)
 		params = append(params, v.Val)
 	}
-	rlt, err := DB.Get().Do("MSet", params...)
+	rlt, err := doCommand("MSet", params...)
 	if err != nil {
 		return false, err
 	}
@@ -29,7 +29,7 @@ func MSet(keyVal ...KeyVal) (bool, error) {
 }
 
 func Get(key string) (string, error) {
-	rlt, err := DB.Get().Do("Get", key)
+	rlt, err := doCommand("Get", key)
 	if err != nil {
 		return "", err
 	}
@@ -37,7 +37,7 @@ func Get(key string) (string, error) {
 }
 
 func MGet(keys ...interface{}) (map[string]string, error) {
-	rlt, err := DB.Get().Do("MGet", keys...)
+	rlt, err := doCommand("MGet", keys...)
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +45,7 @@ func MGet(keys ...interface{}) (map[string]string, error) {
 }
 
 func Del(key string) (bool, error) {
-	rlt, err := DB.Get().Do("Del", key)
+	rlt, err := doCommand("Del", key)
 	if err != nil {
 		return false, err
 	}
@@ -53,7 +53,7 @@ func Del(key string) (bool, error) {
 }
 
 func Expire(key string, ttl int64) (bool, error) {
-	rlt, err := DB.Get().Do("EXPIRE", key, ttl)
+	rlt, err := doCommand("EXPIRE", key, ttl)
 	if err != nil {
 		return false, err
 	}
@@ -61,7 +61,7 @@ func Expire(key string, ttl int64) (bool, error) {
 }
 
 func SetEx(key string, val string, ttl int64) (string, error) {
-	rlt, err := DB.Get().Do("SetEx", key, ttl, val)
+	rlt, err := doCommand("SetEx", key, ttl, val)
 	if err != nil {
 		return "", err
 	}
@@ -69,7 +69,7 @@ func SetEx(key string, val string, ttl int64) (string, error) {
 }
 
 func SetNx(key string, val string, ttl ...int64) (bool, error) {
-	rlt, err := DB.Get().Do("SetNx", key, val)
+	rlt, err := doCommand("SetNx", key, val)
 	if err != nil {
 		return false, err
 	}
@@ -83,7 +83,7 @@ func SetNx(key string, val string, ttl ...int64) (bool, error) {
 }
 
 func Decr(key string) (int64, error) {
-	rlt, err := DB.Get().Do("Decr", key)
+	rlt, err := doCommand("Decr", key)
 	if err != nil {
 		return 0, err
 	}
@@ -91,7 +91,7 @@ func Decr(key string) (int64, error) {
 }
 
 func Incr(key string) (int64, error) {
-	rlt, err := DB.Get().Do("Incr", key)
+	rlt, err := doCommand("Incr", key)
 	if err != nil {
 		return 0, err
 	}
@@ -99,7 +99,7 @@ func Incr(key string) (int64, error) {
 }
 
 func IncrBy(key string, num int64) (int64, error) {
-	rlt, err := DB.Get().Do("IncrBy", key, num)
+	rlt, err := doCommand("IncrBy", key, num)
 	if err != nil {
 		return 0, err
 	}
@@ -107,7 +107,7 @@ func IncrBy(key string, num int64) (int64, error) {
 }
 
 func Lock(key string, ttl ...int64) bool {
-	rlt, _ := DB.Get().Do("SetNx", key, 1)
+	rlt, _ := doCommand("SetNx", key, 1)
 	if formatBool(rlt) {
 		if len(ttl) > 0 {
 			Expire(key, ttl[0])

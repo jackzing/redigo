@@ -12,7 +12,6 @@ type SortSet struct {
 	Member string
 }
 
-
 func formatBool(rlt interface{}) bool {
 	if rlt == nil {
 		return false
@@ -68,4 +67,10 @@ func formatSortSet(rlt interface{}) []SortSet {
 		data = append(data, SortSet{Score: int64(score), Member: string(sliceData[i].([]byte))})
 	}
 	return data
+}
+
+func doCommand(cmd string, args ...interface{}) (interface{}, error) {
+	rc := DB.Get()
+	defer rc.Close()
+	return rc.Do(cmd, args...)
 }

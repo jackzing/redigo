@@ -7,7 +7,7 @@ func SAdd(setKey string, members ...string) (int64, error) {
 	for _, v := range members {
 		params = append(params, v)
 	}
-	rlt, err := DB.Get().Do("SAdd", params...)
+	rlt, err := doCommand("SAdd", params...)
 	if err != nil {
 		return 0, err
 	}
@@ -21,7 +21,7 @@ func SRem(setKey string, members ...string) (int64, error) {
 	for _, v := range members {
 		params = append(params, v)
 	}
-	rlt, err := DB.Get().Do("SRem", params...)
+	rlt, err := doCommand("SRem", params...)
 	if err != nil {
 		return 0, err
 	}
@@ -30,7 +30,7 @@ func SRem(setKey string, members ...string) (int64, error) {
 
 // SCard 获取集合成员数
 func SCard(setKey string) (int64, error) {
-	rlt, err := DB.Get().Do("SCard", setKey)
+	rlt, err := doCommand("SCard", setKey)
 	if err != nil {
 		return 0, err
 	}
@@ -39,7 +39,7 @@ func SCard(setKey string) (int64, error) {
 
 // SDiff 返回其他集合不存在的成员列表
 func SDiff(setKeys ...interface{}) ([]string, error) {
-	rlt, err := DB.Get().Do("SDiff", setKeys...)
+	rlt, err := doCommand("SDiff", setKeys...)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +48,7 @@ func SDiff(setKeys ...interface{}) ([]string, error) {
 
 // SInter 返回多个集合交集
 func SInter(setKeys ...interface{}) ([]string, error) {
-	rlt, err := DB.Get().Do("SInter", setKeys...)
+	rlt, err := doCommand("SInter", setKeys...)
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +57,7 @@ func SInter(setKeys ...interface{}) ([]string, error) {
 
 // SUnion 返回多个集合并集
 func SUnion(setKeys ...interface{}) ([]string, error) {
-	rlt, err := DB.Get().Do("SUnion", setKeys...)
+	rlt, err := doCommand("SUnion", setKeys...)
 	if err != nil {
 		return nil, err
 	}
@@ -66,7 +66,7 @@ func SUnion(setKeys ...interface{}) ([]string, error) {
 
 // SIsMember 判断集合是否存在成员
 func SIsMember(setKey string, member string) (bool, error) {
-	rlt, err := DB.Get().Do("SIsMember", setKey, member)
+	rlt, err := doCommand("SIsMember", setKey, member)
 	if err != nil {
 		return false, err
 	}
@@ -75,7 +75,7 @@ func SIsMember(setKey string, member string) (bool, error) {
 
 // SMove 把成员member从source集合移动到destination集合
 func SMove(source string, destination string, member string) (bool, error) {
-	rlt, err := DB.Get().Do("SMove", source, destination, member)
+	rlt, err := doCommand("SMove", source, destination, member)
 	if err != nil {
 		return false, err
 	}
@@ -84,7 +84,7 @@ func SMove(source string, destination string, member string) (bool, error) {
 
 // SPop 随机获取并移除一个成员
 func SPop(setKey string) (string, error) {
-	rlt, err := DB.Get().Do("SPop", setKey)
+	rlt, err := doCommand("SPop", setKey)
 	if err != nil {
 		return "", err
 	}
@@ -93,7 +93,7 @@ func SPop(setKey string) (string, error) {
 
 // SMembers 获取集合成员列表
 func SMembers(setKey string) ([]string, error) {
-	rlt, err := DB.Get().Do("SMembers", setKey)
+	rlt, err := doCommand("SMembers", setKey)
 	if err != nil {
 		return nil, err
 	}
@@ -102,7 +102,7 @@ func SMembers(setKey string) ([]string, error) {
 
 // SRandMember 随机获取 count 个成员
 func SRandMember(setKey string, count int64) ([]string, error) {
-	rlt, err := DB.Get().Do("SRandMember", setKey, count)
+	rlt, err := doCommand("SRandMember", setKey, count)
 	if err != nil {
 		return nil, err
 	}
@@ -119,7 +119,7 @@ func ZAdd(setKey string, members ...SortSet) (int64, error) {
 		params = append(params, v.Score)
 		params = append(params, v.Member)
 	}
-	rlt, err := DB.Get().Do("ZAdd", params...)
+	rlt, err := doCommand("ZAdd", params...)
 	if err != nil {
 		return 0, err
 	}
@@ -128,7 +128,7 @@ func ZAdd(setKey string, members ...SortSet) (int64, error) {
 
 // ZCard 集合成员数
 func ZCard(setKey string) (int64, error) {
-	rlt, err := DB.Get().Do("ZCard", setKey)
+	rlt, err := doCommand("ZCard", setKey)
 	if err != nil {
 		return 0, err
 	}
@@ -137,7 +137,7 @@ func ZCard(setKey string) (int64, error) {
 
 // ZCount 计算score 之间的数量
 func ZCount(setKey string, min int64, max int64) (int64, error) {
-	rlt, err := DB.Get().Do("ZCount", setKey, min, max)
+	rlt, err := doCommand("ZCount", setKey, min, max)
 	if err != nil {
 		return 0, err
 	}
@@ -155,7 +155,7 @@ func ZCount(setKey string, min int64, max int64) (int64, error) {
 
 // ZIncrBy 对成员分数修改
 func ZIncrBy(setKey string, member string, sort int64) (string, error) {
-	rlt, err := DB.Get().Do("ZIncrBy", setKey, sort, member)
+	rlt, err := doCommand("ZIncrBy", setKey, sort, member)
 	if err != nil {
 		return "", err
 	}
@@ -164,7 +164,7 @@ func ZIncrBy(setKey string, member string, sort int64) (string, error) {
 
 // ZRangeMap 取范围 0 - -1 返回 map
 func ZRangeMap(setKey string, start int64, stop int64) (map[string]string, error) {
-	rlt, err := DB.Get().Do("ZRange", setKey, start, stop, "WithScores")
+	rlt, err := doCommand("ZRange", setKey, start, stop, "WithScores")
 	if err != nil {
 		return nil, err
 	}
@@ -178,7 +178,7 @@ func ZRangeMap(setKey string, start int64, stop int64) (map[string]string, error
 
 // ZRange 取范围 0 - -1 返回 排序 递增
 func ZRange(setKey string, start int64, stop int64) ([]SortSet, error) {
-	rlt, err := DB.Get().Do("ZRange", setKey, start, stop, "WithScores")
+	rlt, err := doCommand("ZRange", setKey, start, stop, "WithScores")
 	if err != nil {
 		return nil, err
 	}
@@ -187,7 +187,7 @@ func ZRange(setKey string, start int64, stop int64) ([]SortSet, error) {
 
 // ZRevRange 取范围 0 - -1 返回 排序 递减
 func ZRevRange(setKey string, start int64, stop int64) ([]SortSet, error) {
-	rlt, err := DB.Get().Do("ZRevRange", setKey, start, stop, "WithScores")
+	rlt, err := doCommand("ZRevRange", setKey, start, stop, "WithScores")
 	if err != nil {
 		return nil, err
 	}
@@ -201,7 +201,7 @@ func ZRangeByScoreMap(setKey string, start string, stop string, offsetAndCount .
 	if len(offsetAndCount) > 0 {
 		args = append(args, "limit", offsetAndCount[0], offsetAndCount[1])
 	}
-	rlt, err := doLimit("ZRangeByScore", args...)
+	rlt, err := doCommand("ZRangeByScore", args...)
 	if err != nil {
 		return nil, err
 	}
@@ -220,7 +220,7 @@ func ZRangeByScore(setKey string, start string, stop string, offsetAndCount ...s
 	if len(offsetAndCount) > 0 {
 		args = append(args, "limit", offsetAndCount[0], offsetAndCount[1])
 	}
-	rlt, err := doLimit("ZRangeByScore", args...)
+	rlt, err := doCommand("ZRangeByScore", args...)
 	if err != nil {
 		return nil, err
 	}
@@ -234,7 +234,7 @@ func ZRevRangeByScore(setKey string, start string, stop string,offsetAndCount ..
 	if len(offsetAndCount) > 0 {
 		args = append(args, "limit", offsetAndCount[0], offsetAndCount[1])
 	}
-	rlt, err := doLimit("ZRevRangeByScore", args...)
+	rlt, err := doCommand("ZRevRangeByScore", args...)
 	if err != nil {
 		return nil, err
 	}
@@ -243,7 +243,7 @@ func ZRevRangeByScore(setKey string, start string, stop string,offsetAndCount ..
 
 // ZRank 获取member 排名 递增
 func ZRank(setKey string, member string) (int64, error) {
-	rlt, err := DB.Get().Do("ZRank", setKey, member)
+	rlt, err := doCommand("ZRank", setKey, member)
 	if err != nil {
 		return 0, err
 	}
@@ -252,7 +252,7 @@ func ZRank(setKey string, member string) (int64, error) {
 
 // ZRevRank 获取member 排名 递减
 func ZRevRank(setKey string, member string) (int64, error) {
-	rlt, err := DB.Get().Do("ZRevRank", setKey, member)
+	rlt, err := doCommand("ZRevRank", setKey, member)
 	if err != nil {
 		return 0, err
 	}
@@ -266,7 +266,7 @@ func ZRem(setKey string, members ...interface{}) (int64, error) {
 	for _, v := range members {
 		params = append(params, v)
 	}
-	rlt, err := DB.Get().Do("ZRem", params...)
+	rlt, err := doCommand("ZRem", params...)
 	if err != nil {
 		return 0, err
 	}
@@ -275,7 +275,7 @@ func ZRem(setKey string, members ...interface{}) (int64, error) {
 
 // ZRemByRank 移除有序集合 指定排名区间的成员
 func ZRemByRank(setKey string, min int64, max int64) (int64, error) {
-	rlt, err := DB.Get().Do("ZRemRangeByRank", setKey, min, max)
+	rlt, err := doCommand("ZRemRangeByRank", setKey, min, max)
 	if err != nil {
 		return 0, err
 	}
@@ -284,7 +284,7 @@ func ZRemByRank(setKey string, min int64, max int64) (int64, error) {
 
 // ZRemByScore 移除有序集合 指定分数区间的成员
 func ZRemByScore(setKey string, min int64, max int64) (int64, error) {
-	rlt, err := DB.Get().Do("ZRemRangeByScore", setKey, min, max)
+	rlt, err := doCommand("ZRemRangeByScore", setKey, min, max)
 	if err != nil {
 		return 0, err
 	}
@@ -293,17 +293,9 @@ func ZRemByScore(setKey string, min int64, max int64) (int64, error) {
 
 // ZScore 返回有序集合成员的分数
 func ZScore(setKey string, member string) (string, error) {
-	rlt, err := DB.Get().Do("ZScore", setKey, member)
+	rlt, err := doCommand("ZScore", setKey, member)
 	if err != nil {
 		return "", err
 	}
 	return formatString(rlt), err
-}
-
-func doLimit(cmd string, args ...interface{}) (interface{}, error) {
-	rlt, err := DB.Get().Do(cmd, args...)
-	if err != nil {
-		return 0, err
-	}
-	return rlt, nil
 }

@@ -1,7 +1,7 @@
 package redis
 
 func HSet(hashKey string, key string, val interface{}) (bool, error) {
-	rlt, err := DB.Get().Do("HSet", hashKey, key, val)
+	rlt, err := doCommand("HSet", hashKey, key, val)
 	if err != nil {
 		return false, err
 	}
@@ -15,7 +15,7 @@ func HMSet(hashKey string, keyVal ...KeyVal) (string, error) {
 		params = append(params, v.Key)
 		params = append(params, v.Val)
 	}
-	rlt, err := DB.Get().Do("HMSet", params...)
+	rlt, err := doCommand("HMSet", params...)
 	if err != nil {
 		return "", err
 	}
@@ -23,7 +23,7 @@ func HMSet(hashKey string, keyVal ...KeyVal) (string, error) {
 }
 
 func HGet(hashKey string, key string) (string, error) {
-	rlt, err := DB.Get().Do("HGet", hashKey, key)
+	rlt, err := doCommand("HGet", hashKey, key)
 	if err != nil {
 		return "", err
 	}
@@ -31,7 +31,7 @@ func HGet(hashKey string, key string) (string, error) {
 }
 
 func HGetAll(hashKey string) (map[string]string, error) {
-	rlt, err := DB.Get().Do("HGetAll", hashKey)
+	rlt, err := doCommand("HGetAll", hashKey)
 	if err != nil {
 		return nil, err
 	}
@@ -53,7 +53,7 @@ func HMGet(hashKey string, keys ...interface{}) (map[string]string, error) {
 	for _, v := range keys {
 		params = append(params, v)
 	}
-	rlt, err := DB.Get().Do("HMGet", params...)
+	rlt, err := doCommand("HMGet", params...)
 	if err != nil {
 		return nil, err
 	}
@@ -61,7 +61,7 @@ func HMGet(hashKey string, keys ...interface{}) (map[string]string, error) {
 }
 
 func HDel(hashKey string, key string) (bool, error) {
-	rlt, err := DB.Get().Do("HDel", hashKey, key)
+	rlt, err := doCommand("HDel", hashKey, key)
 	if err != nil {
 		return false, err
 	}
@@ -69,7 +69,7 @@ func HDel(hashKey string, key string) (bool, error) {
 }
 
 func HExists(hashKey string, key string) (bool, error) {
-	rlt, err := DB.Get().Do("HExists", hashKey, key)
+	rlt, err := doCommand("HExists", hashKey, key)
 	if err != nil {
 		return false, err
 	}
@@ -77,7 +77,7 @@ func HExists(hashKey string, key string) (bool, error) {
 }
 
 func HIncrBy(hashKey string, key string, num int64) (int64, error) {
-	rlt, err := DB.Get().Do("HIncrBy", hashKey, key, num)
+	rlt, err := doCommand("HIncrBy", hashKey, key, num)
 	if err != nil {
 		return 0, err
 	}
@@ -85,14 +85,14 @@ func HIncrBy(hashKey string, key string, num int64) (int64, error) {
 }
 
 func HKeys(hashKey string) ([]string, error) {
-	rlt, err := DB.Get().Do("HKeys", hashKey)
+	rlt, err := doCommand("HKeys", hashKey)
 	if err != nil {
 		return nil, err
 	}
 	return formatSlice(rlt), err
 }
 func HVals(hashKey string) ([]string, error) {
-	rlt, err := DB.Get().Do("HVals", hashKey)
+	rlt, err := doCommand("HVals", hashKey)
 	if err != nil {
 		return nil, err
 	}
@@ -100,7 +100,7 @@ func HVals(hashKey string) ([]string, error) {
 }
 
 func HLen(hashKey string) (int64, error) {
-	rlt, err := DB.Get().Do("HLen", hashKey)
+	rlt, err := doCommand("HLen", hashKey)
 	if err != nil {
 		return 0, err
 	}

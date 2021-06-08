@@ -1,8 +1,11 @@
 package redis
 
-import "fmt"
+import (
+	"fmt"
+	"testing"
+)
 
-func KeyFuncTest() {
+func TestKeyFunc(t *testing.T) {
 	key := "test:key"
 	fmt.Print(Set(key, 666))     // true
 	fmt.Println("// true")
