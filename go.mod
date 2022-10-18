@@ -1,4 +1,4 @@
-module github.com/wuyan94zl/redigo
+module github.com/jackzing/redigo
 
 go 1.16
 
